@@ -3,47 +3,90 @@
 -- table 6 Surplus to price & cake size
 
 CREATE DATABASE delectable_cakes;
-
 USE delectable_cakes;
 
 CREATE TABLE customise (
+combination_id INT NOT NULL AUTO_INCREMENT,
 icing_colour VARCHAR(15),
 tiers INT,
-writing VARCHAR(100));
+writing VARCHAR(100),
+CONSTRAINT
+pk_combination_id
+PRIMARY KEY (combination_id));
+
 
 CREATE TABLE date_required (
 customer_id INT NOT NULL,
-cake_id INT NOT NULL,
-date1 DATE NOT NULL);
+cake_id VARCHAR(15) NOT NULL,
+date_required DATE NOT NULL);
+
+ALTER TABLE date_required
+ADD CONSTRAINT 
+fk_customer_id
+FOREIGN KEY (customer_id) 
+REFERENCES customer_names (customer_id);
 
 CREATE TABLE size (
-customer_id INT NOT NULL,
-cake_id INT NOT NULL,
-size VARCHAR(10),
-surcharge FLOAT);
+customer_id INT NOT NULL, -- fk
+cake_id VARCHAR(15) NOT NULL,
+size VARCHAR(10) NULL DEFAULT 'Small',
+surcharge FLOAT NULL DEFAULT 0.00);
+
+ALTER TABLE size
+ADD CONSTRAINT 
+fk_customer_id
+FOREIGN KEY (customer_id) 
+REFERENCES customer_names (customer_id);
+
 
 INSERT INTO customise (
 icing_colour, tiers, writing)
 VALUES
 ('Blue', 1, 'Happy Birthday!'),
 ('Pink', 1, 'Happy Birthday!'),
-('White', 2, NULL),
-('White', 3, NULL);
+('Chocolate', 1, 'Happy Anniversary!'),
+('White', 1, 'Happy Anniversary!'),
+('White', 1, 'On Your Christening Day'),
+('Blue', 1, 'Congratulations!'),
+('Pink', 1, 'Congratulations!'),
+('White', 1, 'Congratulations!');
 
--- Am i right in thinking I need the customer IDs and cake IDs to use for my date the cake is required and size of cake table?
+INSERT INTO customise (
+icing_colour, tiers)
+VALUES
+('White', 2),
+('White', 3);
+
+
 INSERT INTO date_required (
-customer_id, cake_id, date1)
+customer_id, cake_ID, date_required)
 VALUES 
-(, , 2022-06-22),
-(, , 2022-06-23),
-(, , 2022-06-24),
-(, , 2022-06-25),
-(, , 2022-06-26),
-(, , 2022-06-27)
+(721906, 'RV-8720', '2022-06-22'),
+(513980, 'CH-6124', '2022-06-24'),
+(280462, 'CA-5591', '2022-06-26'),
+(166094, 'VA-2158' , '2022-06-28'),
+(452652, 'CH-9027', '2022-06-30'),
+(991327, 'RV-3864', '2022-07-02'),
+(338213, 'CA-6798', '2022-07-04'),
+(825563, 'VA-5129', '2022-07-06'),
+(288461, 'VA-1542', '2022-07-08'),
+(909336, 'RV-7746', '2022-07-10');
+
 
 INSERT INTO size ( 
-customer_id, cake_id, size, surcharge)
+customer_id, cake_ID, size, surcharge)
 VALUES
-(, , 'Small', 0),
-(, , 'Medium', 3),
-(, , 'Large', 6)
+(513980, 'CH-6124', 'Medium', 3.00),
+(280462, 'CA-5591', 'Large', 6.00),
+(991327, 'RV-3864', 'Medium', 3.00),
+(338213, 'CA-6798', 'Large', 6.00),
+(825563, 'VA-5129', 'Large', 6.00),
+(909336, 'RV-7746', 'Large', 6.00);
+
+INSERT INTO size ( 
+customer_id, cake_ID)
+VALUES
+(721906, 'RV-8720'),
+(166094, 'VA-2158'),
+(452652, 'CH-9027'),
+(288461, 'VA-1542');
